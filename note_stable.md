@@ -1,42 +1,31 @@
-## Magisk v25.2-delta by HuskyDG
+## Magisk v25.2-delta-4 by HuskyDG
 
-> Synchronized with Magisk v25.2
+### Diffs to official Magisk
 
-### Diff from official
-
-- [General] MagiskHide is restored and enabled by default
-- [General] The package name is `io.github.huskydg.magisk`
-- [MagiskHide] Hide Google SafetyNet process by default
-- [General] Implement Core-only mode
-- [General] Support installing Magisk into system partition
-- [General] Add button to temporarily disable Magisk
-- [General] Add button to download and install Riru core
-- [General] Fix Magisk survival script `addon.d` when FBE cannot be decrypted: Change modules directory from `/data/adb/magisk` to `/data/unencrypted/MAGISKBIN` and symlink back
-- [MagiskHide] Only reset sensitive props after boot completed
-- [General] Change magisk directory from `/data/adb/modules` to `/data/unencrypted/magisk_modules` and symlink back on FBE so you can manage module from Recovery.
-- [MagiskInit] Inject Magisk services through `exec` option
-- [MagiskHide] Introduce MagiskHide Dualspace mode to hide Magisk from all apps on dual space
-- [MagiskHide] Introduce MagiskHide WhiteList mode to hide Magisk from all apps except apps that have been previously granted root access from Magisk
+- [General] Restore MagiskHide, uses system logcat to monitor app processes startup: disabled or abnormal logcat can't use MagiskHide.
+- [General] Introduce Riru extension: run MagiskHide in Riru. MagiskHide no longer need to rely in logcat to work. Download [Riru extension](https://github.com/HuskyDG/riru-unshare/releases/latest)
+- [App] The package name is `io.github.huskydg.magisk`
+- [App] Support Magisk installation without boot image for emulators
+- [General] Copy required files to `/system` for `addon.d`, like Lygisk
 - [Manager] Show all supported languages in Language settings for Chinese ROM
-- [Modules] Support systemless deleting files or folders for modules. [Learn more about it...](https://huskydg.github.io/blog/delete-file-and-folder-by-magisk-module)
-- [General] Introduce Anti Zygote loop feature to automatically boot into Core-only mode if zygote fails to start for many times (aka. bootloop)
+- [Modules] Support systemless deleting files or folders for modules
+- [General] Built-in Bootloop Protection to protect system from bootloop by Modules
+- [General] Tune F2FS for unencrypted devices
+- [MagiskInit] Support Pre-Init mount, replace system files before `init` starts
+- [MagiskInit] Support loading custom rc script from pre-init directory
+- [App] Wait for service to bind before accessing [topjohnwu/Magisk#6268](https://github.com/topjohnwu/Magisk/pull/6268)
+- [Modules] Support magic mount more partitions (`my_*`, `odm`, `optics`, `prism`)
+- [MagiskInit] Use stable random number seed [topjohnwu/Magisk#6340](https://github.com/topjohnwu/Magisk/pull/6340)
+- [MagiskHide] Introduce [SuList feature](https://huskydg.github.io/magisk-files/docs/sulist): Sulist apps are granted root, Magisk remain invisible for other processes
 
-### About MagiskHide WhiteList
+## Magisk (c3b4678f) (25204)
 
-After WhiteList is enabled, Magisk will be hidden from all apps by default and only previously apps have been granted root access from Magisk can continue to access Magisk.
+- Make hiding the Magisk app 100% offline
+- Cleanups and minor refactoring of Zygisk
 
-Temporarily turn off MagiskHide WhiteList if you want to grant root access to new apps
+## Diffs to v25.2
 
-MagiskHide WhiteList has significant performance and memory consumption issue and might break some modules that require app to read (overlay module, systemize app, ...). Only use WhiteList if necessary
-
-## 2022.7.20 Magisk v25.2
-
-Maintenance release fixing various issues.
-
-- [MagiskInit] Fix a potential issue when stub cpio is used
-- [MagiskInit] Fix reboot to recovery when stub cpio is used
-- [MagiskInit] Fix sepolicy.rules symlink for rootfs devices
-- [General] Better data encryption detection
-- [General] Move the whole logging infrastructure into Rust
-
-### Full Changelog: [here](https://topjohnwu.github.io/Magisk/changes.html)
+- [General] Fix minor bug in module files mounting implementation
+- [MagiskPolicy] Fix minor bug in command line argument parsing
+- [Zygisk] Prevent crashing daemon in error
+- [Zygisk] Rewrite zygote code injection with new loader library approach
